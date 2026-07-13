@@ -126,7 +126,7 @@
             navigator.clipboard.writeText('deepanshuchaudharyy@gmail.com').then(function () {
                 copyBtn.setAttribute('data-pill', 'copied.');
                 setTimeout(function () {
-                    copyBtn.setAttribute('data-pill', 'my email');
+                    copyBtn.setAttribute('data-pill', 'deepanshuchaudharyy@gmail.com');
                 }, 1400);
             });
         });
