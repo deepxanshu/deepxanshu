@@ -1,0 +1,420 @@
+:root {
+    --paper: #ffffff;
+    --ink: #15171b;
+    --muted: #494f58;
+    --line: #dde2e9;
+    --accent: #1463c6;
+    --accent-strong: #0b438c;
+    --ball-1: #e3edfa;
+    --ball-2: #c7dcf6;
+    --pill-bg: #10131a;
+    --pill-fg: #f5f7fb;
+    --display: "Instrument Serif", Georgia, "Times New Roman", serif;
+    --body: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root[data-theme="dark"] {
+    --paper: #0a0e14;
+    --ink: #e8ecf2;
+    --muted: #9aa4b1;
+    --line: #1c2733;
+    --accent: #6fa8ef;
+    --accent-strong: #9cc4f5;
+    --ball-1: #101f36;
+    --ball-2: #16406e;
+    --pill-bg: #e8ecf2;
+    --pill-fg: #10131a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-width: 0;
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+}
+
+body {
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background-color 400ms ease, color 400ms ease;
+}
+
+a {
+    color: inherit;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 1px;
+}
+
+/* ---------- metaballs ---------- */
+
+.balls {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ball {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, var(--ball-2), var(--ball-1) 72%);
+    filter: blur(26px);
+    opacity: 0.9;
+    will-change: transform;
+    transition: background 400ms ease;
+}
+
+.b1 { width: 230px; height: 230px; }
+.b2 { width: 150px; height: 150px; }
+.b3 { width: 110px; height: 110px; }
+.b4 { width: 84px; height: 84px; }
+
+/* the one that follows the cursor: small and quick */
+.b5 { width: 64px; height: 64px; filter: blur(12px); }
+
+:root[data-theme="dark"] .ball { opacity: 0.55; }
+
+/* ---------- stage ---------- */
+
+.stage {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 48px clamp(20px, 5vw, 48px);
+    text-align: center;
+}
+
+/* ---------- hero: glyphs + name ---------- */
+
+.hero {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 3.5vw, 34px);
+}
+
+.glyphs {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 3vh, 26px);
+}
+
+.glyphs-right {
+    margin-left: clamp(14px, 3vw, 30px); /* clears the sun mark's overhang */
+}
+
+.glyph {
+    width: 17px;
+    height: 17px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+    line-height: 0;
+    opacity: 0.82;
+    transition: color 180ms ease, opacity 180ms ease, transform 180ms ease;
+}
+
+.glyph:hover {
+    color: var(--accent-strong);
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.glyph svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* the music note rests alone at the bottom of the page */
+
+.glyph-music {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    margin-left: -8px;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+}
+
+.glyph-music .slash { display: none; }
+.glyph-music.muted .slash { display: block; }
+.glyph-music.muted { opacity: 0.38; }
+
+.name-wrap {
+    position: relative;
+}
+
+.name {
+    position: relative;
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(3.5rem, 12.5vw, 7.6rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+    white-space: nowrap;
+    cursor: default;
+}
+
+.name-link {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.name-overlay {
+    position: absolute;
+    inset: 0;
+    color: var(--accent);
+    pointer-events: none;
+    clip-path: circle(0px at -100px -100px);
+}
+
+/* the mark: one blue disc, sun by day, crescent by night
+   (.name .mark so position:absolute outranks .pill's position:relative) */
+
+.name .mark {
+    position: absolute;
+    top: 0.05em;
+    right: -0.3em;
+    width: max(19px, 0.16em);
+    height: max(19px, 0.16em);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    cursor: pointer;
+    line-height: 0;
+}
+
+.mark svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.mark .moon { display: none; }
+:root[data-theme="dark"] .mark .sun { display: none; }
+:root[data-theme="dark"] .mark .moon { display: block; }
+
+/* ---------- identity line = the trigger ---------- */
+
+.identity-line {
+    margin: clamp(24px, 5vh, 40px) 0 0;
+    padding: 0 2px 3px;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: none;
+    color: var(--accent-strong);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease;
+}
+
+.identity-line:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ---------- the reveal: name drifts up, words come down ---------- */
+
+.reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    width: 100%;
+    transition: grid-template-rows 380ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.reveal-clip {
+    overflow: hidden;
+}
+
+.surfaced {
+    max-width: 34em;
+    margin: 0 auto;
+    padding: clamp(34px, 6vh, 56px) 4px 24px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 300ms ease 90ms, transform 300ms ease 90ms, visibility 0s 400ms;
+}
+
+html.surfaced-open .reveal {
+    grid-template-rows: 1fr;
+}
+
+html.surfaced-open .surfaced {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: opacity 300ms ease 140ms, transform 340ms ease 140ms;
+}
+
+.surfaced p {
+    margin: 0 0 20px;
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.text-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color 150ms ease, border-color 150ms ease;
+}
+
+.text-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.quiet-link {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--accent);
+    font-size: 0.94rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
+}
+
+.quiet-link:hover {
+    border-color: var(--accent);
+}
+
+/* ---------- pills (hover tooltips) ---------- */
+
+.pill {
+    position: relative;
+}
+
+.pill::after {
+    content: attr(data-pill);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translate(-50%, 3px);
+    padding: 4px 10px 5px;
+    border-radius: 999px;
+    background: var(--pill-bg);
+    color: var(--pill-fg);
+    font-family: var(--body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: 0.005em;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 160ms ease;
+    z-index: 2;
+}
+
+.pill:hover::after,
+.pill:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.name-link.pill::after {
+    bottom: calc(100% - 4px);
+}
+
+@media (hover: none) {
+    .pill::after { display: none; }
+}
+
+/* ---------- writing page ---------- */
+
+.stage-writing {
+    justify-content: flex-start;
+    padding-top: clamp(64px, 14vh, 140px);
+}
+
+.hero-small .name {
+    font-size: clamp(2.3rem, 7vw, 3.6rem);
+}
+
+.writing {
+    margin-top: clamp(56px, 12vh, 110px);
+}
+
+.writing-title {
+    margin: 0 0 clamp(36px, 7vh, 64px);
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 6.5vw, 3.8rem);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1;
+}
+
+.entry {
+    margin: 0 0 10px;
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: clamp(1.25rem, 3.2vw, 1.55rem);
+    font-weight: 400;
+    opacity: 0.55;
+}
+
+.note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-style: italic;
+}
+
+/* ---------- motion preferences / small screens ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    body,
+    .reveal,
+    .surfaced,
+    .ball {
+        transition: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .hero {
+        gap: 14px;
+    }
+
+    .glyph {
+        width: 15px;
+        height: 15px;
+    }
+
+    .surfaced p {
+        font-size: 0.96rem;
+    }
+}
