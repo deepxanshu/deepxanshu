@@ -213,13 +213,12 @@ a {
     clip-path: circle(0px at -100px -100px);
 }
 
-/* the mark: one blue disc, sun by day, crescent by night */
+/* the mark: gold sun by day, pale crescent by night */
 
 .mark {
     padding: 0;
     border: 0;
     background: none;
-    color: var(--accent);
     cursor: pointer;
     line-height: 0;
     transition: transform 180ms ease;
@@ -231,7 +230,9 @@ a {
     display: block;
 }
 
-.mark .moon { display: none; }
+.mark .sun { color: #f2a93d; }
+.mark .moon { color: #cdd6e6; display: none; }
+
 :root[data-theme="dark"] .mark .sun { display: none; }
 :root[data-theme="dark"] .mark .moon { display: block; }
 
