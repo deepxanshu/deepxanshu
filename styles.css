@@ -121,7 +121,7 @@ a {
 }
 
 .glyphs-right {
-    margin-left: clamp(14px, 3vw, 30px); /* clears the sun mark's overhang */
+    margin-left: clamp(10px, 2vw, 20px);
 }
 
 .glyph {
@@ -149,7 +149,8 @@ a {
     display: block;
 }
 
-/* the music note rests alone at the bottom of the page */
+/* the music note rests alone at the bottom of the page,
+   the theme toggle mirrors it at the top */
 
 .glyph-music {
     position: fixed;
@@ -165,6 +166,21 @@ a {
 .glyph-music .slash { display: none; }
 .glyph-music.muted .slash { display: block; }
 .glyph-music.muted { opacity: 0.38; }
+
+.glyph-theme {
+    position: fixed;
+    top: 28px;
+    left: 50%;
+    margin-left: -9px;
+    z-index: 3;
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+}
+
+.glyph-theme:hover {
+    opacity: 1;
+}
 
 .name-wrap {
     position: relative;
@@ -197,21 +213,16 @@ a {
     clip-path: circle(0px at -100px -100px);
 }
 
-/* the mark: one blue disc, sun by day, crescent by night
-   (.name .mark so position:absolute outranks .pill's position:relative) */
+/* the mark: one blue disc, sun by day, crescent by night */
 
-.name .mark {
-    position: absolute;
-    top: 0.05em;
-    right: -0.3em;
-    width: max(19px, 0.16em);
-    height: max(19px, 0.16em);
+.mark {
     padding: 0;
     border: 0;
     background: none;
     color: var(--accent);
     cursor: pointer;
     line-height: 0;
+    transition: transform 180ms ease;
 }
 
 .mark svg {
