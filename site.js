@@ -173,8 +173,8 @@
         balls.forEach(function (b, i) {
             if (b.cursor) {
                 if (mouse.seen) {
-                    b.x += (mouse.x - b.x) * 0.07;
-                    b.y += (mouse.y - b.y) * 0.07;
+                    b.x += (mouse.x - b.x) * 0.09;
+                    b.y += (mouse.y - b.y) * 0.09;
                 } else {
                     /* no pointer yet (or touch device): wander gently instead */
                     b.x = W * (0.5 + 0.16 * Math.sin(t * 0.00019 + 3.0));

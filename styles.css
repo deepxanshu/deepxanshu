@@ -2,27 +2,25 @@
     --paper: #ffffff;
     --ink: #15171b;
     --muted: #494f58;
-    --line: #dde2e9;
+    --line: #d5dde8;
     --accent: #1463c6;
     --accent-strong: #0b438c;
-    --ball-1: #e3edfa;
-    --ball-2: #c7dcf6;
+    --ball: #d8e7fa;
     --pill-bg: #10131a;
-    --pill-fg: #f5f7fb;
-    --display: "Fraunces", Georgia, "Times New Roman", serif;
-    --body: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --pill-fg: #ffffff;
+    --display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    --body: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root[data-theme="dark"] {
     --paper: #0a0e14;
-    --ink: #e8ecf2;
-    --muted: #9aa4b1;
-    --line: #1c2733;
+    --ink: #ffffff;
+    --muted: #c3ccd8;
+    --line: #223047;
     --accent: #6fa8ef;
     --accent-strong: #9cc4f5;
-    --ball-1: #101f36;
-    --ball-2: #16406e;
-    --pill-bg: #e8ecf2;
+    --ball: #132e51;
+    --pill-bg: #ffffff;
     --pill-fg: #10131a;
 }
 
@@ -55,10 +53,14 @@ a {
 :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 4px;
-    border-radius: 1px;
+    border-radius: 2px;
 }
 
-/* ---------- metaballs ---------- */
+.goo-defs {
+    position: absolute;
+}
+
+/* ---------- metaballs: clear circles that melt into each other ---------- */
 
 .balls {
     position: fixed;
@@ -66,6 +68,7 @@ a {
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+    filter: url(#goo);
 }
 
 .ball {
@@ -73,22 +76,18 @@ a {
     top: 0;
     left: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at 38% 34%, var(--ball-2), var(--ball-1) 72%);
-    filter: blur(26px);
-    opacity: 0.9;
+    background: var(--ball);
     will-change: transform;
     transition: background 400ms ease;
 }
 
-.b1 { width: 230px; height: 230px; }
-.b2 { width: 150px; height: 150px; }
-.b3 { width: 110px; height: 110px; }
-.b4 { width: 84px; height: 84px; }
+.b1 { width: 210px; height: 210px; }
+.b2 { width: 140px; height: 140px; }
+.b3 { width: 105px; height: 105px; }
+.b4 { width: 80px; height: 80px; }
 
-/* the one that follows the cursor: small and quick */
-.b5 { width: 64px; height: 64px; filter: blur(12px); }
-
-:root[data-theme="dark"] .ball { opacity: 0.55; }
+/* the one that follows the cursor: big enough to swallow the name whole */
+.b5 { width: 150px; height: 150px; }
 
 /* ---------- stage ---------- */
 
@@ -117,35 +116,41 @@ a {
     z-index: 3; /* keep the glyph tooltips above the name, not painted behind it */
     display: flex;
     flex-direction: column;
-    gap: clamp(16px, 3vh, 26px);
+    gap: clamp(12px, 2.4vh, 20px);
 }
 
-.glyphs-right {
-    margin-left: clamp(10px, 2vw, 20px);
-}
+/* every icon lives in a small square box */
 
 .glyph {
-    width: 17px;
-    height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
     padding: 0;
-    border: 0;
-    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--paper);
     color: var(--ink);
     cursor: pointer;
     line-height: 0;
-    opacity: 0.82;
-    transition: color 180ms ease, opacity 180ms ease, transform 180ms ease;
+    transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
 .glyph:hover {
-    color: var(--accent-strong);
-    opacity: 1;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
     transform: translateY(-2px);
 }
 
+:root[data-theme="dark"] .glyph:hover {
+    color: #0a0e14;
+}
+
 .glyph svg {
-    width: 100%;
-    height: 100%;
+    width: 15px;
+    height: 15px;
     display: block;
 }
 
@@ -154,33 +159,31 @@ a {
 
 .glyph-music {
     position: fixed;
-    bottom: 28px;
+    bottom: 24px;
     left: 50%;
-    margin-left: -8px;
+    margin-left: -16px;
     z-index: 1;
-    width: 16px;
-    height: 16px;
-    opacity: 0.5;
 }
 
 .glyph-music .slash { display: none; }
 .glyph-music.muted .slash { display: block; }
-.glyph-music.muted { opacity: 0.38; }
+.glyph-music.muted { opacity: 0.6; }
 
 .glyph-theme {
     position: fixed;
-    top: 28px;
+    top: 24px;
     left: 50%;
-    margin-left: -9px;
+    margin-left: -16px;
     z-index: 3;
-    width: 18px;
-    height: 18px;
-    opacity: 0.7;
 }
 
-.glyph-theme:hover {
-    opacity: 1;
-}
+/* gold sun by day, pale crescent by night */
+
+.glyph-theme .sun { color: #f2a93d; }
+.glyph-theme .moon { color: #cdd6e6; display: none; }
+
+:root[data-theme="dark"] .glyph-theme .sun { display: none; }
+:root[data-theme="dark"] .glyph-theme .moon { display: block; }
 
 .name-wrap {
     position: relative;
@@ -190,12 +193,10 @@ a {
     position: relative;
     margin: 0;
     font-family: var(--display);
-    font-size: clamp(2.9rem, 9.8vw, 5.9rem);
+    font-size: clamp(2.5rem, 8.2vw, 4.7rem);
     font-weight: 600;
-    font-optical-sizing: auto;
-    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
-    letter-spacing: -0.025em;
-    line-height: 0.98;
+    letter-spacing: -0.03em;
+    line-height: 1;
     white-space: nowrap;
     cursor: default;
 }
@@ -213,50 +214,26 @@ a {
     clip-path: circle(0px at -100px -100px);
 }
 
-/* the mark: gold sun by day, pale crescent by night */
-
-.mark {
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    line-height: 0;
-    transition: transform 180ms ease;
-}
-
-.mark svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-.mark .sun { color: #f2a93d; }
-.mark .moon { color: #cdd6e6; display: none; }
-
-:root[data-theme="dark"] .mark .sun { display: none; }
-:root[data-theme="dark"] .mark .moon { display: block; }
-
 /* ---------- identity line = the trigger ---------- */
 
 .identity-line {
-    margin: clamp(24px, 5vh, 40px) 0 0;
-    padding: 0 2px 3px;
-    border: 0;
-    border-bottom: 1px solid transparent;
+    margin: clamp(22px, 4.5vh, 36px) 0 0;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
     background: none;
     color: var(--accent-strong);
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 1.3rem;
-    font-weight: 400;
-    letter-spacing: 0.01em;
+    font-family: var(--body);
+    font-size: 1.02rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
     cursor: pointer;
-    transition: color 180ms ease, border-color 180ms ease;
+    transition: color 160ms ease, border-color 160ms ease;
 }
 
 .identity-line:hover {
     color: var(--accent);
-    border-bottom-color: var(--accent);
+    border-color: var(--accent);
 }
 
 /* ---------- the reveal: name drifts up, words come down ---------- */
@@ -273,7 +250,7 @@ a {
 }
 
 .surfaced {
-    max-width: 34em;
+    max-width: 33em;
     margin: 0 auto;
     padding: clamp(34px, 6vh, 56px) 4px 24px;
     visibility: hidden;
@@ -296,7 +273,11 @@ html.surfaced-open .surfaced {
 .surfaced p {
     margin: 0 0 20px;
     color: var(--muted);
-    font-size: 1rem;
+    font-size: 0.98rem;
+}
+
+:root[data-theme="dark"] .surfaced p {
+    color: #ffffff;
 }
 
 .text-link {
@@ -314,18 +295,27 @@ html.surfaced-open .surfaced {
 .quiet-link {
     display: inline-block;
     margin-top: 4px;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
     color: var(--accent);
-    font-size: 0.94rem;
+    font-size: 0.92rem;
+    font-weight: 500;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 150ms ease;
+    transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
 }
 
 .quiet-link:hover {
+    background: var(--accent);
     border-color: var(--accent);
+    color: #ffffff;
 }
 
-/* ---------- pills (hover tooltips) ---------- */
+:root[data-theme="dark"] .quiet-link:hover {
+    color: #0a0e14;
+}
+
+/* ---------- boxy hover labels ---------- */
 
 .pill {
     position: relative;
@@ -334,18 +324,17 @@ html.surfaced-open .surfaced {
 .pill::after {
     content: attr(data-pill);
     position: absolute;
-    bottom: calc(100% + 10px);
+    bottom: calc(100% + 9px);
     left: 50%;
     transform: translate(-50%, 3px);
-    padding: 4px 10px 5px;
-    border-radius: 999px;
+    padding: 5px 10px;
+    border-radius: 3px;
     background: var(--pill-bg);
     color: var(--pill-fg);
     font-family: var(--body);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 500;
-    font-style: normal;
-    letter-spacing: 0.005em;
+    letter-spacing: 0.02em;
     line-height: 1.4;
     white-space: nowrap;
     opacity: 0;
@@ -364,6 +353,12 @@ html.surfaced-open .surfaced {
     bottom: calc(100% - 4px);
 }
 
+/* the theme toggle's label opens downward so it never leaves the viewport */
+
+.glyph-theme.pill::after {
+    bottom: auto;
+    top: calc(100% + 9px);
+}
 
 @media (hover: none) {
     .pill::after { display: none; }
@@ -377,7 +372,7 @@ html.surfaced-open .surfaced {
 }
 
 .hero-small .name {
-    font-size: clamp(2.3rem, 7vw, 3.6rem);
+    font-size: clamp(2rem, 6vw, 3rem);
 }
 
 .writing {
@@ -387,10 +382,9 @@ html.surfaced-open .surfaced {
 .writing-title {
     margin: 0 0 clamp(36px, 7vh, 64px);
     font-family: var(--display);
-    font-size: clamp(2.2rem, 6.5vw, 3.8rem);
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: -0.01em;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
     line-height: 1;
 }
 
@@ -398,8 +392,8 @@ html.surfaced-open .surfaced {
     margin: 0 0 10px;
     color: var(--ink);
     font-family: var(--display);
-    font-size: clamp(1.25rem, 3.2vw, 1.55rem);
-    font-weight: 400;
+    font-size: clamp(1.15rem, 3vw, 1.45rem);
+    font-weight: 500;
     opacity: 0.55;
 }
 
@@ -407,7 +401,6 @@ html.surfaced-open .surfaced {
     margin: 0;
     color: var(--muted);
     font-size: 0.82rem;
-    font-style: italic;
 }
 
 /* ---------- motion preferences / small screens ---------- */
@@ -427,11 +420,21 @@ html.surfaced-open .surfaced {
     }
 
     .glyph {
-        width: 15px;
-        height: 15px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .glyph svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    .glyph-music,
+    .glyph-theme {
+        margin-left: -14px;
     }
 
     .surfaced p {
-        font-size: 0.96rem;
+        font-size: 0.94rem;
     }
 }

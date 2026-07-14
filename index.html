@@ -8,7 +8,7 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%231463C6'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script>
         (function () {
@@ -20,6 +20,15 @@
     </script>
 </head>
 <body>
+    <svg class="goo-defs" aria-hidden="true" width="0" height="0">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur"/>
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -11" result="goo"/>
+            </filter>
+        </defs>
+    </svg>
+
     <div class="balls" aria-hidden="true">
         <span class="ball b1"></span>
         <span class="ball b2"></span>
@@ -28,7 +37,7 @@
         <span class="ball b5"></span>
     </div>
 
-    <button class="glyph-theme mark pill" id="theme-toggle" type="button" aria-pressed="false" data-pill="lights off" aria-label="Switch to dark mode">
+    <button class="glyph glyph-theme pill" id="theme-toggle" type="button" aria-pressed="false" data-pill="lights off" aria-label="Switch to dark mode">
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><line x1="12" y1="2.2" x2="12" y2="5.4"/><line x1="12" y1="18.6" x2="12" y2="21.8"/><line x1="2.2" y1="12" x2="5.4" y2="12"/><line x1="18.6" y1="12" x2="21.8" y2="12"/><line x1="5.1" y1="5.1" x2="7.3" y2="7.3"/><line x1="16.7" y1="16.7" x2="18.9" y2="18.9"/><line x1="5.1" y1="18.9" x2="7.3" y2="16.7"/><line x1="16.7" y1="7.3" x2="18.9" y2="5.1"/></g></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.4 13.6A8.5 8.5 0 1 1 10.4 3.6a6.8 6.8 0 0 0 10 10z"/></svg>
     </button>
