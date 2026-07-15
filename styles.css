@@ -7,7 +7,7 @@
     --accent-strong: #0b438c;
     --pill-bg: #10131a;
     --pill-fg: #ffffff;
-    --display: "Baloo 2", ui-sans-serif, system-ui, sans-serif;
+    --display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
     --body: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -76,13 +76,13 @@ a {
     top: 0;
     left: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at 32% 30%, #ecf4fe 0%, #d3e5fa 52%, #b9d5f5 100%);
+    background: radial-gradient(circle at 32% 30%, #cbe0fb 0%, #a3c9f7 52%, #7fb0f0 100%);
     will-change: transform;
     transition: background 400ms ease;
 }
 
 :root[data-theme="dark"] .ball {
-    background: radial-gradient(circle at 32% 30%, #1e416f 0%, #14304f 55%, #0e2340 100%);
+    background: radial-gradient(circle at 32% 30%, #2b5da0 0%, #1a3d6e 55%, #122c50 100%);
 }
 
 .b1 { width: 190px; height: 190px; }
@@ -149,15 +149,12 @@ a {
     display: block;
 }
 
-.glyph:hover svg {
-    animation: wiggle 450ms ease;
+.glyph svg {
+    transition: transform 150ms ease;
 }
 
-@keyframes wiggle {
-    0%, 100% { transform: rotate(0) scale(1); }
-    30% { transform: rotate(-10deg) scale(1.2); }
-    60% { transform: rotate(8deg) scale(1.12); }
-    85% { transform: rotate(-4deg) scale(1.04); }
+.glyph:hover svg {
+    transform: scale(1.12);
 }
 
 /* the theme toggle stays pinned at the top, the music note at the bottom
@@ -210,8 +207,8 @@ a {
     margin: 0;
     font-family: var(--display);
     font-size: clamp(2.4rem, 7.8vw, 4.4rem);
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    font-weight: 800;
+    letter-spacing: -0.03em;
     line-height: 1;
     white-space: nowrap;
     cursor: default;
@@ -424,7 +421,7 @@ html.surfaced-open .surfaced {
     }
 
     .glyph:hover svg {
-        animation: none;
+        transform: none;
     }
 }
 
