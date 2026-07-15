@@ -5,10 +5,9 @@
     --line: #d5dde8;
     --accent: #1463c6;
     --accent-strong: #0b438c;
-    --ball: #d8e7fa;
     --pill-bg: #10131a;
     --pill-fg: #ffffff;
-    --display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    --display: "Baloo 2", ui-sans-serif, system-ui, sans-serif;
     --body: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -19,7 +18,6 @@
     --line: #223047;
     --accent: #6fa8ef;
     --accent-strong: #9cc4f5;
-    --ball: #132e51;
     --pill-bg: #ffffff;
     --pill-fg: #10131a;
 }
@@ -58,9 +56,11 @@ a {
 
 .goo-defs {
     position: absolute;
+    width: 0;
+    height: 0;
 }
 
-/* ---------- metaballs: clear circles that melt into each other ---------- */
+/* ---------- metaballs: soft dimensional blobs that melt together ---------- */
 
 .balls {
     position: fixed;
@@ -68,7 +68,7 @@ a {
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    filter: url(#goo);
+    filter: url(#goo) blur(6px);
 }
 
 .ball {
@@ -76,18 +76,22 @@ a {
     top: 0;
     left: 0;
     border-radius: 50%;
-    background: var(--ball);
+    background: radial-gradient(circle at 32% 30%, #ecf4fe 0%, #d3e5fa 52%, #b9d5f5 100%);
     will-change: transform;
     transition: background 400ms ease;
 }
 
-.b1 { width: 210px; height: 210px; }
-.b2 { width: 140px; height: 140px; }
-.b3 { width: 105px; height: 105px; }
-.b4 { width: 80px; height: 80px; }
+:root[data-theme="dark"] .ball {
+    background: radial-gradient(circle at 32% 30%, #1e416f 0%, #14304f 55%, #0e2340 100%);
+}
 
-/* the one that follows the cursor: big enough to swallow the name whole */
-.b5 { width: 150px; height: 150px; }
+.b1 { width: 190px; height: 190px; }
+.b2 { width: 135px; height: 135px; }
+.b3 { width: 100px; height: 100px; }
+.b4 { width: 75px; height: 75px; }
+
+/* the one that follows the cursor: big enough to swallow the name */
+.b5 { width: 140px; height: 140px; }
 
 /* ---------- stage ---------- */
 
@@ -99,7 +103,7 @@ a {
     align-items: center;
     justify-content: center;
     min-height: 100svh;
-    padding: 48px clamp(20px, 5vw, 48px);
+    padding: 64px clamp(20px, 5vw, 48px);
     text-align: center;
 }
 
@@ -108,82 +112,94 @@ a {
 .hero {
     display: flex;
     align-items: center;
-    gap: clamp(18px, 3.5vw, 34px);
+    gap: clamp(20px, 3.5vw, 36px);
 }
 
 .glyphs {
     position: relative;
-    z-index: 3; /* keep the glyph tooltips above the name, not painted behind it */
+    z-index: 3; /* keep the glyph labels above the name, not painted behind it */
     display: flex;
     flex-direction: column;
-    gap: clamp(12px, 2.4vh, 20px);
+    gap: clamp(14px, 2.6vh, 22px);
 }
 
-/* every icon lives in a small square box */
+/* bare icons with a playful wiggle on hover */
 
 .glyph {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
+    display: inline-flex;
     padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    background: var(--paper);
+    border: 0;
+    background: none;
     color: var(--ink);
     cursor: pointer;
     line-height: 0;
-    transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    opacity: 0.85;
+    transition: color 160ms ease, opacity 160ms ease;
 }
 
-.glyph:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #ffffff;
-    transform: translateY(-2px);
-}
-
-:root[data-theme="dark"] .glyph:hover {
-    color: #0a0e14;
+.glyph:hover,
+.glyph:focus-visible {
+    color: var(--accent);
+    opacity: 1;
 }
 
 .glyph svg {
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     display: block;
 }
 
-/* the music note rests alone at the bottom of the page,
-   the theme toggle mirrors it at the top */
-
-.glyph-music {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    margin-left: -16px;
-    z-index: 1;
+.glyph:hover svg {
+    animation: wiggle 450ms ease;
 }
 
-.glyph-music .slash { display: none; }
-.glyph-music.muted .slash { display: block; }
-.glyph-music.muted { opacity: 0.6; }
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0) scale(1); }
+    30% { transform: rotate(-10deg) scale(1.2); }
+    60% { transform: rotate(8deg) scale(1.12); }
+    85% { transform: rotate(-4deg) scale(1.04); }
+}
 
-.glyph-theme {
+/* the theme toggle stays pinned at the top, the music note at the bottom
+   (double-class so position:fixed outranks .pill's position:relative) */
+
+.glyph.glyph-theme {
     position: fixed;
-    top: 24px;
+    top: 22px;
     left: 50%;
-    margin-left: -16px;
+    margin-left: -9px;
     z-index: 3;
+    opacity: 0.75;
 }
 
-/* gold sun by day, pale crescent by night */
+.glyph-theme svg {
+    width: 17px;
+    height: 17px;
+}
 
 .glyph-theme .sun { color: #f2a93d; }
 .glyph-theme .moon { color: #cdd6e6; display: none; }
 
 :root[data-theme="dark"] .glyph-theme .sun { display: none; }
 :root[data-theme="dark"] .glyph-theme .moon { display: block; }
+
+.glyph.glyph-music {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    margin-left: -8px;
+    z-index: 3;
+    opacity: 0.55;
+}
+
+.glyph-music svg {
+    width: 16px;
+    height: 16px;
+}
+
+.glyph-music .slash { display: none; }
+.glyph-music.muted .slash { display: block; }
+.glyph-music.muted { opacity: 0.4; }
 
 .name-wrap {
     position: relative;
@@ -193,9 +209,9 @@ a {
     position: relative;
     margin: 0;
     font-family: var(--display);
-    font-size: clamp(2.5rem, 8.2vw, 4.7rem);
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.4rem, 7.8vw, 4.4rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
     line-height: 1;
     white-space: nowrap;
     cursor: default;
@@ -217,10 +233,10 @@ a {
 /* ---------- identity line = the trigger ---------- */
 
 .identity-line {
-    margin: clamp(22px, 4.5vh, 36px) 0 0;
-    padding: 9px 16px;
-    border: 1px solid transparent;
-    border-radius: 4px;
+    margin: clamp(18px, 3.5vh, 30px) 0 0;
+    padding: 0 2px 3px;
+    border: 0;
+    border-bottom: 1px solid transparent;
     background: none;
     color: var(--accent-strong);
     font-family: var(--body);
@@ -233,7 +249,7 @@ a {
 
 .identity-line:hover {
     color: var(--accent);
-    border-color: var(--accent);
+    border-bottom-color: var(--accent);
 }
 
 /* ---------- the reveal: name drifts up, words come down ---------- */
@@ -252,7 +268,7 @@ a {
 .surfaced {
     max-width: 33em;
     margin: 0 auto;
-    padding: clamp(34px, 6vh, 56px) 4px 24px;
+    padding: clamp(24px, 4.5vh, 40px) 4px 8px;
     visibility: hidden;
     opacity: 0;
     transform: translateY(10px);
@@ -271,9 +287,10 @@ html.surfaced-open .surfaced {
 }
 
 .surfaced p {
-    margin: 0 0 20px;
+    margin: 0 0 14px;
     color: var(--muted);
-    font-size: 0.98rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 :root[data-theme="dark"] .surfaced p {
@@ -294,28 +311,20 @@ html.surfaced-open .surfaced {
 
 .quiet-link {
     display: inline-block;
-    margin-top: 4px;
-    padding: 6px 12px;
-    border: 1px solid var(--line);
-    border-radius: 4px;
+    margin-top: 2px;
     color: var(--accent);
     font-size: 0.92rem;
     font-weight: 500;
     text-decoration: none;
-    transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms ease;
 }
 
 .quiet-link:hover {
-    background: var(--accent);
     border-color: var(--accent);
-    color: #ffffff;
 }
 
-:root[data-theme="dark"] .quiet-link:hover {
-    color: #0a0e14;
-}
-
-/* ---------- boxy hover labels ---------- */
+/* ---------- hover labels: small, dense, quick ---------- */
 
 .pill {
     position: relative;
@@ -324,22 +333,23 @@ html.surfaced-open .surfaced {
 .pill::after {
     content: attr(data-pill);
     position: absolute;
-    bottom: calc(100% + 9px);
+    bottom: calc(100% + 8px);
     left: 50%;
     transform: translate(-50%, 3px);
-    padding: 5px 10px;
-    border-radius: 3px;
+    padding: 3px 7px;
+    border-radius: 2px;
     background: var(--pill-bg);
     color: var(--pill-fg);
     font-family: var(--body);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    line-height: 1.5;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 160ms ease, transform 160ms ease;
+    transition: opacity 140ms ease, transform 140ms ease;
     z-index: 2;
 }
 
@@ -357,7 +367,7 @@ html.surfaced-open .surfaced {
 
 .glyph-theme.pill::after {
     bottom: auto;
-    top: calc(100% + 9px);
+    top: calc(100% + 8px);
 }
 
 @media (hover: none) {
@@ -372,7 +382,7 @@ html.surfaced-open .surfaced {
 }
 
 .hero-small .name {
-    font-size: clamp(2rem, 6vw, 3rem);
+    font-size: clamp(1.9rem, 5.5vw, 2.8rem);
 }
 
 .writing {
@@ -383,8 +393,8 @@ html.surfaced-open .surfaced {
     margin: 0 0 clamp(36px, 7vh, 64px);
     font-family: var(--display);
     font-size: clamp(2rem, 6vw, 3.4rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     line-height: 1;
 }
 
@@ -393,7 +403,7 @@ html.surfaced-open .surfaced {
     color: var(--ink);
     font-family: var(--display);
     font-size: clamp(1.15rem, 3vw, 1.45rem);
-    font-weight: 500;
+    font-weight: 600;
     opacity: 0.55;
 }
 
@@ -412,29 +422,23 @@ html.surfaced-open .surfaced {
     .ball {
         transition: none;
     }
+
+    .glyph:hover svg {
+        animation: none;
+    }
 }
 
 @media (max-width: 560px) {
     .hero {
-        gap: 14px;
-    }
-
-    .glyph {
-        width: 28px;
-        height: 28px;
+        gap: 16px;
     }
 
     .glyph svg {
-        width: 13px;
-        height: 13px;
-    }
-
-    .glyph-music,
-    .glyph-theme {
-        margin-left: -14px;
+        width: 16px;
+        height: 16px;
     }
 
     .surfaced p {
-        font-size: 0.94rem;
+        font-size: 0.92rem;
     }
 }
